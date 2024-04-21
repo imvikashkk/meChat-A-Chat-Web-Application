@@ -59,6 +59,7 @@ function Login() {
         // Handle Errors here.
         const errorCode = error.code;
         let errorMessage = error.message;
+        console.log({error: error.message, errorCode: errorCode})
         // The email of the user's account used.
         const email = error.customData.email;
         // The AuthCredential type that was used.
