@@ -22,6 +22,7 @@ function MessageInput({
   const [imagePreview, setImagePreview] = useState<any>(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState<any>(false);
   const [openImageModal, setOpenImageModal] = useState<boolean>(false);
+  const [isUploading, setIsUploading] = useState<boolean>(false)
 
   const storage = getStorage(app);
 
@@ -39,6 +40,7 @@ function MessageInput({
   const handleUpload = async () => {
     if (!file) {
       console.error("No file selected.");
+      setIsUploading(false)
       return;
     }
 
@@ -54,6 +56,7 @@ function MessageInput({
       },
       (error) => {
         console.error("Error uploading file:", error.message);
+        setIsUploading(false);
         // You might want to handle the error state here
       },
       () => {
@@ -64,9 +67,11 @@ function MessageInput({
             setImage(downloadURL);
             setImagePreview(null);
             setOpenImageModal(false);
+            setIsUploading(false)
           })
           .catch((error) => {
             console.error("Error getting download URL:", error.message);
+            setIsUploading(false)
             // You might want to handle the error state here
           });
       }
@@ -90,7 +95,7 @@ function MessageInput({
         sendMessage();
       }}>
      <div className="flex items-center relative">
-     <div className="mr-2 ">
+     <div className="mr-2">
         <FaPaperclip
           onClick={() => setOpenImageModal(true)}
           className={`text-2xl ${
@@ -114,7 +119,7 @@ function MessageInput({
         className="w-[95%] text-xl xs:text-lg xxs:text-base border-none mr-4 px-2 xs:px-1 outline-none bg-transparent"
       />
 
-     <button type="submit" className="-ml-3">
+     <button type="submit" onClick={()=>setUploadProgress(0.1)} className="-ml-3">
         <FaPaperPlane className="text-2xl xs:text-xl xxs:text-base text-blue-500 dark:text-blue-600 cursor-pointer" />
       </button>
      </div>
@@ -167,7 +172,7 @@ function MessageInput({
               onChange={handleFileChange}
               className="xs:block xs:mb-2"
             />
-            {uploadProgress > 0 && (
+            {(uploadProgress > 0 || isUploading) && (
               <div className="hidden xs:flex xs:items-center">
                 <progress value={uploadProgress} max="100"></progress>{" "}
                 <span>{uploadProgress?.toFixed(2)}%</span>
@@ -177,19 +182,22 @@ function MessageInput({
             <button
               type="button"
               onClick={(e) => {
-                if(uploadProgress > 0 && uploadProgress < 100){
+                if(isUploading){
                   e.preventDefault()
                   return
                 }
-                uploadImage();
+                setIsUploading(true)
+                setTimeout(()=>{
+                  uploadImage();
+                },10)
               }}
               className={`btn btn-sm btn-primary xs:w-full ${
-                uploadProgress == 100 && "pointer-events-none"
-              }`}>
-              {uploadProgress == 100 ? "Uploaded" : (uploadProgress > 0 && uploadProgress < 100) ? "Uploading" : "Upload"}
+                (uploadProgress == 100 || isUploading) && "pointer-events-none"
+              } ${isUploading && "bg-slate-500"}`}>
+              {uploadProgress == 100 ? "Uploaded" : isUploading ? "Uploading" : "Upload"}
             </button>
 
-            {uploadProgress > 0 && (
+            {(uploadProgress > 0 || isUploading) && (
               <div className="flex items-center xs:hidden">
                 <progress
                   value={uploadProgress}
