@@ -84,12 +84,13 @@ function MessageInput({
 
   return (
     <form
-      className="relative flex items-center p-4 bg-slate-200 shadow-top dark:bg-slate-800 dark:shadow-topDark "
+      className="relative p-4 bg-slate-200 shadow-top dark:bg-slate-800 dark:shadow-topDark "
       onSubmit={(e) => {
         e.preventDefault();
         sendMessage();
       }}>
-      <div className="mr-2 ">
+     <div className="flex items-center relative">
+     <div className="mr-2 ">
         <FaPaperclip
           onClick={() => setOpenImageModal(true)}
           className={`text-2xl ${
@@ -110,12 +111,14 @@ function MessageInput({
         onChange={(e) => setMessage(e.target.value)}
         type="text"
         placeholder="Type a message..."
-        className="flex-1 text-xl xs:text-lg xxs:text-base border-none px-2 xs:px-1 outline-none bg-transparent"
+        className="w-[95%] text-xl xs:text-lg xxs:text-base border-none mr-4 px-2 xs:px-1 outline-none bg-transparent"
       />
 
-      <button type="submit" className="absolute right-2">
+     <button type="submit" className="mr-2">
         <FaPaperPlane className="text-2xl xs:text-xl xxs:text-base text-blue-500 dark:text-blue-600 cursor-pointer" />
       </button>
+     </div>
+
 
       {showEmojiPicker && (
         <div className="absolute bottom-full right-0 p-2 lg:scale-90 lg:bottom-10 xxs:scale-75  xxs:-right-11 xxs:bottom-1  lg:-right-5">
