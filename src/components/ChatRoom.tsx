@@ -90,16 +90,15 @@ function ChatRoom({ user, setSelectedChatroom, selectedChatroom }: any) {
 
   return (
     <div className="flex flex-col h-screen">
-      <div className="flex items-center bg-slate-400 dark:bg-slate-700 pl-1 py-1">
+      <div className="flex items-center bg-slate-400 dark:bg-slate-700 pl-1 py-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="w-8 xs:w-7 h-auto mr-2 text-slate-700 font-bold p-1 bg-[#ccc] rounded-full hidden md:inline-block cursor-pointer"
-          onClick={() => setSelectedChatroom(null)}
-          >
+          className="w-8 h-auto mr-2 text-slate-700 font-bold p-1 bg-[#ccc] rounded-full hidden md:inline-block cursor-pointer"
+          onClick={() => setSelectedChatroom(null)}>
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -111,7 +110,7 @@ function ChatRoom({ user, setSelectedChatroom, selectedChatroom }: any) {
           alt="avatar"
           width={100}
           height={100}
-          className="w-12 xs:w-10 h-12 xs:h-10 rounded-full -mt-1"
+          className="w-12 h-12 rounded-full "
         />
         <div className="ml-2 text-lg xs:text-base font-semibold text-white leading-4">
           {other?.name}
@@ -119,7 +118,9 @@ function ChatRoom({ user, setSelectedChatroom, selectedChatroom }: any) {
       </div>
 
       {/* Messages container with overflow and scroll */}
-      <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-10 sm:px-4 sm:py-6">
+      <div
+        ref={messagesContainerRef}
+        className="flex-1 overflow-y-auto p-10 sm:px-4 sm:py-6">
         {messages?.map((message: any) => {
           return (
             <MessageCard
@@ -133,13 +134,15 @@ function ChatRoom({ user, setSelectedChatroom, selectedChatroom }: any) {
       </div>
 
       {/* Input box at the bottom */}
-      <MessageInput
-        sendMessage={sendMessage}
-        message={message}
-        setMessage={setMessage}
-        image={image}
-        setImage={setImage}
-      />
+      <div className="fixed w-full bottom-0">
+        <MessageInput
+          sendMessage={sendMessage}
+          message={message}
+          setMessage={setMessage}
+          image={image}
+          setImage={setImage}
+        />
+      </div>
     </div>
   );
 }
