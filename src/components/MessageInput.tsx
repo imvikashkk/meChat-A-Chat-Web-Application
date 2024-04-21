@@ -114,7 +114,7 @@ function MessageInput({
         className="w-[95%] text-xl xs:text-lg xxs:text-base border-none mr-4 px-2 xs:px-1 outline-none bg-transparent"
       />
 
-     <button type="submit" className="mr-2">
+     <button type="submit" className="-ml-3">
         <FaPaperPlane className="text-2xl xs:text-xl xxs:text-base text-blue-500 dark:text-blue-600 cursor-pointer" />
       </button>
      </div>

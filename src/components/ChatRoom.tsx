@@ -89,7 +89,7 @@ function ChatRoom({ user, setSelectedChatroom, selectedChatroom }: any) {
   };
 
   return (
-    <div className="flex h-screen flex-col">
+    <div className="flex  w-full h-screen flex-col">
       <div className="flex items-center bg-slate-400 dark:bg-slate-700 pl-1 py-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -134,7 +134,7 @@ function ChatRoom({ user, setSelectedChatroom, selectedChatroom }: any) {
       </div>
 
       {/* Input box at the bottom */}
-      <div className="sticky bottom-0">
+      <div className="fixed bottom-0 w-9/12 md:w-full">
         <MessageInput
           sendMessage={sendMessage}
           message={message}

@@ -51,7 +51,7 @@ export default function Home() {
         )}
       </div>
       {/* DeskTop View */}
-      <div className="flex h-full md:hidden">
+      <div className="flex w-full h-full md:hidden">
         {/* Left side users */}
         <div className="flex-shrink-0 w-3/12">
           <Users userData={user} setSelectedChatroom={setSelectedChatroom} />
