@@ -118,7 +118,7 @@ function MessageInput({
       </button>
 
       {showEmojiPicker && (
-        <div className="absolute bottom-full right-0 p-2 lg:scale-90 lg:-bottom-2 sm:-bottom-4 lg:-right-12">
+        <div className="absolute bottom-full right-0 p-2 lg:scale-90 lg:bottom-10 xxs:scale-75  xxs:-right-11 xxs:bottom-1  lg:-right-5">
           <EmojiPicker
             onEmojiClick={handleEmojiClick}
             //@ts-ignore
