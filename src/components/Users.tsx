@@ -35,7 +35,6 @@ function Users({
     setActiveTab(tab);
   };
 
-
   //get all users
   useEffect(() => {
     setLoading2(true);
@@ -82,7 +81,10 @@ function Users({
     try {
       const existingChatroomsSnapshot1 = await getDocs(existingChatroomsQuery1);
       const existingChatroomsSnapsho2 = await getDocs(existingChatroomsQuery2);
-      if (existingChatroomsSnapshot1.docs.length > 0 || existingChatroomsSnapsho2.docs.length > 0) {
+      if (
+        existingChatroomsSnapshot1.docs.length > 0 ||
+        existingChatroomsSnapsho2.docs.length > 0
+      ) {
         // Chatroom already exists, handle it accordingly (e.g., show a message)
         console.log("Chatroom already exists for these users.");
         toast.error("Chatroom already exists for these users.");
@@ -105,7 +107,7 @@ function Users({
       );
       console.log("Chatroom created with ID:", chatroomRef.id);
       setActiveTab("chatrooms");
-      toast.success("ChatRoom created successfully !")
+      toast.success("ChatRoom created successfully !");
     } catch (error) {
       console.error("Error creating or checking chatroom:", error);
     }
@@ -137,16 +139,18 @@ function Users({
 
   return (
     <div className="shadow-lg dark:shadow-slate-600 h-screen pt-4 overflow-auto">
-        <div className="flex justify-start px-4 items-center select-none">
-          <Image
-            src={userData?.avatar}
-            alt="avatar"
-            width={100}
-            height={100}
-            className="w-12 h-12 rounded-full"
-          />
-          <div className="ml-2 text-lg font-semibold leading-4">{userData?.name} {` (you)`}</div>
+      <div className="flex justify-start px-4 items-center select-none">
+        <Image
+          src={userData?.avatar}
+          alt="avatar"
+          width={100}
+          height={100}
+          className="w-12 h-12 rounded-full"
+        />
+        <div className="ml-2 text-lg font-semibold leading-4">
+          {userData?.name} {` (you)`}
         </div>
+      </div>
       <div className="w-full flex xl:flex-col md:flex-row justify-between items-center xl:items-stretch xl:gap-2 p-4">
         <button
           className={`btn btn-outline ${
@@ -162,12 +166,14 @@ function Users({
           onClick={() => handleTabClick("chatrooms")}>
           Chatrooms
         </button>
-        <button className={`btn btn-outline xl:w-full w-[31%] md:w-[31%] px-2`} onClick={logoutClick}>
+        <button
+          className={`btn btn-outline xl:w-full w-[31%] md:w-[31%] px-2`}
+          onClick={logoutClick}>
           Logout
         </button>
       </div>
 
-      <div>
+      <div className="">
         {activeTab === "chatrooms" && (
           <>
             <h1 className="px-4 text-base font-semibold">Chatrooms</h1>
@@ -209,26 +215,25 @@ function Users({
                 <span className="loading loading-spinner text-primary"></span>
               </div>
             )}
-            {users.map((user) => (
-              <div
-                key={user.id}
-                onClick={() => {
-                  createChat(user);
-                }}>
-                {user.id !== userData?.id && (
-                  <UsersCard
-                    name={user.name}
-                    avatar={user.avatar}
-                    latestMessage={""}
-                    type={"user"}
-                  />
-                )}
-              </div>
-            ))}
-          </>
+              {users.map((user) => (
+                <div
+                  key={user.id}
+                  onClick={() => {
+                    createChat(user);
+                  }}>
+                  {user.id !== userData?.id && (
+                    <UsersCard
+                      name={user.name}
+                      avatar={user.avatar}
+                      latestMessage={""}
+                      type={"user"}
+                    />
+                  )}
+                </div>
+              ))}
+            </>
         )}
       </div>
-      
     </div>
   );
 }
