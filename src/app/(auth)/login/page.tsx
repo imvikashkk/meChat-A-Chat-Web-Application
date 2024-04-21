@@ -6,13 +6,14 @@ import { Shantell_Sans } from "next/font/google";
 import EyeIcon from "@/components/Icons/UnhideEye";
 import EyeSlashIcon from "@/components/Icons/HideEye";
 import Link from "next/link";
-import { auth } from "@/lib/firebase";
+import { auth, firestore } from "@/lib/firebase";
 import {
   signInWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
 } from "firebase/auth";
 import GoogleIcon from "@/components/Icons/GoogleIcon";
+import { collection, doc, onSnapshot, query, setDoc, where } from "firebase/firestore";
 
 const shantell_Sans = Shantell_Sans({
   subsets: ["latin"],
@@ -37,36 +38,42 @@ function Login() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
+ 
   const GoogleLogin = () => {
     setError("");
     signInWithPopup(auth, provider)
       .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential?.accessToken;
-        // The signed-in user info.
         const user = result.user;
-        // IdP data available using getAdditionalUserInfo(result)
-        // ...
-
         if (user) {
-          router.replace("/");
+          try {
+            onSnapshot(
+              query(collection(firestore, "users"), where("email", "==", user.email)),
+              async (snapshot: any) => {
+                console.log(snapshot)
+                if(snapshot?.userData){
+                  console.log("User Already Registered !")
+                }else{
+                  const docRef = doc(firestore, "users", user.uid);
+                  await setDoc(docRef, {
+                    name: user.displayName,
+                    email: user.email,
+                    avatar: user.photoURL,
+                  });
+                }
+              }
+            );
+          } catch (error) {
+            console.log({error:error})
+          }
         } else {
-          setError("Invalid Credential");
+          setError("Something Wrong !");
         }
       })
       .catch((error) => {
         // Handle Errors here.
         const errorCode = error.code;
         let errorMessage = error.message;
-        console.log({error: error.message, errorCode: errorCode})
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        // ...
 
-        console.log({ error: error.code });
         switch (errorCode) {
           case "auth/invalid-email":
             errorMessage = "Invalid email address";
